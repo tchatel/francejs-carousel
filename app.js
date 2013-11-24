@@ -18,7 +18,7 @@ angular.module('app', [])
         }
     })
 
-    .directive('carousel', function () {
+    .directive('carousel', function ($timeout) {
 
         return {
             restrict: 'E',
@@ -44,6 +44,24 @@ angular.module('app', [])
                         return this.list[this.currentIndex];
                     }
                 };
+
+                var timer = null;
+                function show() {
+                    if (timer) {
+                        $timeout.cancel(timer);
+                    }
+                    var img = '<img src="' + images.getCurrent() + '"/>';
+                    element.html(img);
+                    timer = $timeout(function () {
+                        images.next();
+                        show();
+                    }, 5000);
+                }
+
+                scope.$watch(attrs.images, function (value) {
+                    images.setList(value);
+                    show();
+                }, true);
 
             }
         };
