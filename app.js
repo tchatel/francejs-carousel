@@ -17,7 +17,7 @@ angular.module('app', [])
         $scope.images = images;
     })
 
-    .directive('carousel', function ($timeout) {
+    .directive('carousel', function () {
 
         return {
             restrict: 'E',
@@ -44,19 +44,6 @@ angular.module('app', [])
                     }
                 };
 
-                function show() {
-                    var img = '<img src="' + images.getCurrent() + '"/>';
-                    element.html(img);
-                    $timeout(function () {
-                        images.next();
-                        show();
-                    }, 5000);
-                }
-
-                scope.$watch(attrs.images, function (value) {
-                    images.setList(value);
-                    show();
-                });
             }
         };
 
