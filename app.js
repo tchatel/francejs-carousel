@@ -19,17 +19,8 @@ angular.module('app', [])
 
     .directive('carousel', function ($timeout) {
 
-        var staticImages = [];
-
         return {
             restrict: 'E',
-            templateUrl: 'carousel.html',
-            transclude: true,
-            controller: function () {
-                this.addImage = function (image) {
-                    staticImages.push(image);
-                };
-            },
             link: function (scope, element, attrs) {
                 var images = {
                     list: [],
@@ -52,31 +43,18 @@ angular.module('app', [])
                         return this.list[this.currentIndex];
                     }
                 };
-                var timer = null;
 
                 function show() {
                     var img = '<img src="' + images.getCurrent() + '"/>';
-                    element.find('span').html(img);
-                    if (timer) {
-                        $timeout.cancel(timer);
-                    }
-                    timer = $timeout(function () {
-                        timer = null;
+                    element.html(img);
+                    $timeout(function () {
                         images.next();
                         show();
                     }, 5000);
                 }
-                scope.prev = function () {
-                    images.prev();
-                    show();
-                }
-                scope.next = function () {
-                    images.next();
-                    show();
-                }
 
                 scope.$watch(attrs.images, function (value) {
-                    images.setList(staticImages.concat(value));
+                    images.setList(value);
                     show();
                 });
             }
@@ -84,14 +62,5 @@ angular.module('app', [])
 
     })
 
-    .directive('carouselImage', function () {
-        return {
-            restrict: 'E',
-            require: '^carousel',
-            link: function (scope, element, attrs, ctrl) {
-                ctrl.addImage(attrs.src);
-            }
-        };
-    })
 
 
