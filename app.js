@@ -4,17 +4,18 @@
 angular.module('app', [])
 
     .controller('Ctrl', function ($scope) {
-        var images = [
-            'img/photo1.jpg',
-            'img/photo2.jpg',
-            'img/photo3.jpg',
-            'img/photo4.jpg',
-            'img/photo5.jpg',
-            'img/photo6.jpg',
-            'img/photo7.jpg',
-            'img/photo8.jpg',
-        ];
+        var next = 5;
+        var images = [];
+        for (var i = 1 ; i < next ; i++) {
+            images.push('img/photo' + i + '.jpg');
+        }
         $scope.images = images;
+        $scope.addImage = function () {
+            if (next <= 8) {
+                images.push('img/photo' + next + '.jpg');
+                next++;
+            }
+        }
     })
 
     .directive('carousel', function () {
