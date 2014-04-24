@@ -82,8 +82,8 @@ angular.module('app', [])
                     return images.list.length;
                 }
 
-                scope.$watch(attrs.images, function (value) {
-                    images.setList(staticImages.concat(value));
+                scope.$watch(attrs.images, function (value, old) {
+                    images.setList(value ? staticImages.concat(value) : staticImages);
                     show();
                 }, true);
             }
